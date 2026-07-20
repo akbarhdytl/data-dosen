@@ -5,1562 +5,682 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PPI Curug – Data Tenaga Pendidik & Kependidikan</title>
   <style>
-    /* ── reset & base ── */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f0f4f9;
-      color: #1a2a3a;
-      padding: 32px 20px;
-      line-height: 1.6;
-    }
-    .container {
-      max-width: 880px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 32px;
-      box-shadow: 0 20px 60px rgba(0, 20, 40, 0.10);
-      padding: 44px 52px;
-      transition: 0.3s;
-    }
-    @media (max-width: 640px) {
-      .container {
-        padding: 24px 18px;
-        border-radius: 20px;
-      }
-      body {
-        padding: 14px;
-      }
-    }
-
-    /* ── header ── */
-    .header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 28px;
-      padding-bottom: 18px;
-      border-bottom: 2px solid #eef2f6;
-      flex-wrap: wrap;
-    }
-    .header .logo-icon {
-      width: 48px;
-      height: 48px;
-      background: #003153;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #f5b01b;
-      font-size: 24px;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-    .header h1 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #003153;
-      letter-spacing: -0.3px;
-    }
-    .header .sub {
-      font-size: 0.8rem;
-      color: #5a6f84;
-      margin-top: 1px;
-    }
-    .header .badge-status {
-      margin-left: auto;
-      font-size: 0.7rem;
-      font-weight: 600;
-      background: #e6f7e6;
-      color: #1e7a3a;
-      padding: 5px 14px;
-      border-radius: 30px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      white-space: nowrap;
-    }
-    .header .badge-status i {
-      font-size: 0.5rem;
-      color: #1e7a3a;
-    }
-
-    /* ── form ── */
-    .form-group {
-      margin-bottom: 22px;
-    }
-    .form-group label {
-      display: block;
-      font-weight: 600;
-      font-size: 0.85rem;
-      color: #1a3a5a;
-      margin-bottom: 5px;
-      letter-spacing: 0.2px;
-    }
-    .form-group label .required {
-      color: #c0392b;
-      margin-left: 2px;
-    }
-    .form-group .hint {
-      font-size: 0.75rem;
-      color: #6b7f94;
-      font-weight: 400;
-      margin-top: 4px;
-    }
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      padding: 11px 16px;
-      border: 1.5px solid #dce3ec;
-      border-radius: 14px;
-      font-size: 0.95rem;
-      font-family: inherit;
-      background: #fafcfe;
-      transition: 0.2s;
-      color: #1a2a3a;
-      outline: none;
-    }
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      border-color: #003153;
-      box-shadow: 0 0 0 4px rgba(0, 49, 83, 0.08);
-      background: white;
-    }
-    .form-group textarea {
-      resize: vertical;
-      min-height: 72px;
-    }
-    .form-group select {
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a6f84' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 16px center;
-      padding-right: 44px;
-      cursor: pointer;
-    }
-    .form-group select:disabled {
-      background-color: #f5f7fa;
-      cursor: default;
-    }
-
-    /* ── row layout ── */
-    .row-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-    @media (max-width: 600px) {
-      .row-2 {
-        grid-template-columns: 1fr;
-        gap: 14px;
-      }
-    }
-
-    /* ── tag input (multi-entry) ── */
-    .tag-input-wrapper {
-      border: 1.5px solid #dce3ec;
-      border-radius: 14px;
-      background: #fafcfe;
-      padding: 10px 14px;
-      transition: 0.2s;
-    }
-    .tag-input-wrapper:focus-within {
-      border-color: #003153;
-      box-shadow: 0 0 0 4px rgba(0, 49, 83, 0.08);
-      background: white;
-    }
-    .tag-input-row {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .tag-input-row input {
-      flex: 1;
-      min-width: 140px;
-      border: none !important;
-      padding: 6px 4px !important;
-      background: transparent !important;
-      box-shadow: none !important;
-      font-size: 0.92rem;
-      outline: none !important;
-    }
-    .tag-input-row input::placeholder {
-      color: #a0b4c8;
-    }
-    .tag-input-row .btn-add-tag {
-      background: #003153;
-      color: white;
-      border: none;
-      padding: 6px 18px;
-      border-radius: 30px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.15s;
-      white-space: nowrap;
-      font-family: inherit;
-    }
-    .tag-input-row .btn-add-tag:hover {
-      background: #00213f;
-      transform: scale(1.02);
-    }
-    .tag-input-row .btn-add-tag:active {
-      transform: scale(0.97);
-    }
-
-    .tag-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-      min-height: 32px;
-      padding-top: 4px;
-      border-top: 1px dashed #e2e8f0;
-    }
-    .tag-list:empty {
-      border-top: none;
-      min-height: 0;
-      padding-top: 0;
-    }
-    .tag-item {
-      background: #eef3fa;
-      color: #1a3a5a;
-      font-size: 0.78rem;
-      font-weight: 500;
-      padding: 4px 12px 4px 14px;
-      border-radius: 30px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid #dce3ec;
-      transition: 0.15s;
-      animation: tagPop 0.2s ease;
-    }
-    .tag-item .remove-tag {
-      background: none;
-      border: none;
-      color: #8a9db0;
-      cursor: pointer;
-      font-size: 1rem;
-      line-height: 1;
-      padding: 0 2px;
-      transition: 0.15s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .tag-item .remove-tag:hover {
-      color: #c0392b;
-      transform: scale(1.2);
-    }
-    @keyframes tagPop {
-      0% {
-        transform: scale(0.8);
-        opacity: 0;
-      }
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    /* ── reference list (global entries) ── */
-    .ref-list {
-      margin-top: 8px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-    .ref-list .ref-label {
-      font-size: 0.65rem;
-      color: #6b7f94;
-      font-weight: 500;
-      margin-right: 4px;
-      background: #f0f4f9;
-      padding: 2px 10px;
-      border-radius: 20px;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .ref-list .ref-item {
-      font-size: 0.7rem;
-      color: #2a5a7a;
-      background: #e8f0fe;
-      padding: 2px 10px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: 0.15s;
-      border: 1px solid transparent;
-      white-space: nowrap;
-      max-width: 220px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .ref-list .ref-item:hover {
-      background: #d4e2fc;
-      border-color: #003153;
-      transform: translateY(-1px);
-    }
-    .ref-list .ref-empty {
-      font-size: 0.7rem;
-      color: #a0b4c8;
-      font-style: italic;
-    }
-
-    /* ── upload area ── */
-    .upload-area {
-      border: 2px dashed #dce3ec;
-      border-radius: 16px;
-      padding: 24px 20px;
-      text-align: center;
-      background: #fafcfe;
-      transition: 0.2s;
-      cursor: pointer;
-      position: relative;
-    }
-    .upload-area:hover {
-      border-color: #003153;
-      background: #f5f8fc;
-    }
-    .upload-area .icon {
-      font-size: 2rem;
-      color: #6b7f94;
-      display: block;
-      margin-bottom: 4px;
-    }
-    .upload-area .text {
-      font-size: 0.9rem;
-      color: #1a3a5a;
-      font-weight: 500;
-    }
-    .upload-area .sub-text {
-      font-size: 0.75rem;
-      color: #6b7f94;
-      margin-top: 2px;
-    }
-    .upload-area .photo-tip {
-      font-size: 0.7rem;
-      color: #2a5a7a;
-      background: #e8f0fe;
-      display: inline-block;
-      padding: 2px 14px;
-      border-radius: 30px;
-      margin-top: 6px;
-    }
-    .upload-area input[type="file"] {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      cursor: pointer;
-    }
-    .upload-area .preview {
-      margin-top: 12px;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .upload-area .preview .preview-img-wrap {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 3px solid #003153;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
-      flex-shrink: 0;
-      background: #eef2f6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .upload-area .preview .preview-img-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .upload-area .preview .file-info {
-      text-align: left;
-      font-size: 0.8rem;
-      color: #1a3a5a;
-    }
-    .upload-area .preview .file-info .file-name {
-      font-weight: 600;
-      word-break: break-all;
-    }
-    .upload-area .preview .file-info .file-size {
-      color: #6b7f94;
-      font-size: 0.7rem;
-    }
-    .upload-area .preview .remove-btn {
-      background: #fde8e8;
-      border: none;
-      color: #a93226;
-      font-size: 1.1rem;
-      cursor: pointer;
-      padding: 4px 12px;
-      border-radius: 30px;
-      transition: 0.15s;
-      font-weight: 600;
-    }
-    .upload-area .preview .remove-btn:hover {
-      background: #fcd0d0;
-    }
-    .upload-area.has-file .preview {
-      display: flex;
-    }
-    .upload-area.has-file .icon,
-    .upload-area.has-file .text,
-    .upload-area.has-file .sub-text,
-    .upload-area.has-file .photo-tip {
-      display: none;
-    }
-    .upload-area.has-file {
-      border-color: #003153;
-      background: #f5f8fc;
-    }
-    .upload-status {
-      font-size: 0.75rem;
-      color: #1e7a3a;
-      margin-top: 6px;
-      display: none;
-      align-items: center;
-      gap: 6px;
-    }
-    .upload-status.show {
-      display: flex;
-    }
-
-    /* ── submit ── */
-    .form-actions {
-      display: flex;
-      gap: 14px;
-      margin-top: 28px;
-      padding-top: 22px;
-      border-top: 2px solid #eef2f6;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .btn {
-      padding: 12px 32px;
-      border: none;
-      border-radius: 40px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-family: inherit;
-      letter-spacing: 0.2px;
-    }
-    .btn-primary {
-      background: #003153;
-      color: white;
-      box-shadow: 0 4px 14px rgba(0, 49, 83, 0.20);
-    }
-    .btn-primary:hover {
-      background: #00213f;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 24px rgba(0, 49, 83, 0.28);
-    }
-    .btn-secondary {
-      background: #eef2f6;
-      color: #1a3a5a;
-    }
-    .btn-secondary:hover {
-      background: #dce3ec;
-    }
-    .btn-success {
-      background: #1e7a3a;
-      color: white;
-    }
-    .btn-success:hover {
-      background: #15632e;
-    }
-    .btn-danger {
-      background: #c0392b;
-      color: white;
-    }
-    .btn-danger:hover {
-      background: #a93226;
-    }
-    .btn:disabled {
-      opacity: 0.6;
-      pointer-events: none;
-      transform: none !important;
-    }
-
-    /* ── notification ── */
-    .notification {
-      padding: 14px 20px;
-      border-radius: 14px;
-      margin-top: 18px;
-      display: none;
-      font-weight: 500;
-      font-size: 0.9rem;
-      align-items: center;
-      gap: 12px;
-    }
-    .notification.success {
-      display: flex;
-      background: #e6f7e6;
-      color: #1e7a3a;
-      border-left: 4px solid #1e7a3a;
-    }
-    .notification.error {
-      display: flex;
-      background: #fde8e8;
-      color: #a93226;
-      border-left: 4px solid #a93226;
-    }
-    .notification i {
-      font-size: 1.2rem;
-    }
-    .notification .close-btn {
-      margin-left: auto;
-      background: none;
-      border: none;
-      font-size: 1.2rem;
-      cursor: pointer;
-      color: inherit;
-      opacity: 0.6;
-      padding: 0 4px;
-    }
-    .notification .close-btn:hover {
-      opacity: 1;
-    }
-
-    /* ── table preview ── */
-    .data-preview {
-      margin-top: 30px;
-      border-top: 2px solid #eef2f6;
-      padding-top: 22px;
-    }
-    .data-preview .preview-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-    .data-preview .preview-header h3 {
-      font-size: 0.9rem;
-      color: #1a3a5a;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .data-preview .preview-header h3 .count {
-      background: #eef2f6;
-      padding: 1px 14px;
-      border-radius: 30px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: #1a3a5a;
-    }
-    .data-preview .preview-header .refresh-btn {
-      background: none;
-      border: none;
-      color: #5a6f84;
-      cursor: pointer;
-      font-size: 0.85rem;
-      padding: 4px 12px;
-      border-radius: 30px;
-      transition: 0.15s;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-family: inherit;
-    }
-    .data-preview .preview-header .refresh-btn:hover {
-      background: #eef2f6;
-      color: #1a3a5a;
-    }
-    .data-preview .table-wrap {
-      overflow-x: auto;
-      border-radius: 14px;
-      border: 1px solid #eef2f6;
-      background: white;
-    }
-    .data-preview table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.78rem;
-      min-width: 560px;
-    }
-    .data-preview th {
-      background: #f5f8fc;
-      color: #1a3a5a;
-      font-weight: 600;
-      padding: 10px 14px;
-      text-align: left;
-      border-bottom: 2px solid #eef2f6;
-      white-space: nowrap;
-    }
-    .data-preview td {
-      padding: 8px 14px;
-      border-bottom: 1px solid #f0f4f9;
-      color: #2a4058;
-      max-width: 180px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .data-preview tr:hover td {
-      background: #fafcfe;
-    }
-    .data-preview .empty-msg {
-      color: #6b7f94;
-      text-align: center;
-      padding: 30px 0;
-      font-size: 0.85rem;
-    }
-    .data-preview .actions-cell {
-      display: flex;
-      gap: 6px;
-    }
-    .data-preview .actions-cell button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: #6b7f94;
-      padding: 3px 8px;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      transition: 0.15s;
-    }
-    .data-preview .actions-cell button:hover {
-      background: #eef2f6;
-      color: #1a3a5a;
-    }
-    .data-preview .actions-cell button.danger:hover {
-      background: #fde8e8;
-      color: #a93226;
-    }
-    .data-preview .photo-thumb {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1px solid #e2e8f0;
-      background: #eef2f6;
-    }
-
-    /* ── spinner ── */
-    .spinner {
-      display: inline-block;
-      width: 18px;
-      height: 18px;
-      border: 2.5px solid rgba(255, 255, 255, 0.3);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      vertical-align: middle;
-    }
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    /* ── misc ── */
-    .flex-between {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .mt-6 {
-      margin-top: 6px;
-    }
-    .text-muted {
-      color: #6b7f94;
-      font-size: 0.8rem;
-    }
-    .inline-flex {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .gap-8 {
-      gap: 8px;
-    }
-    .hidden {
-      display: none !important;
-    }
-
-    /* ── responsive ── */
-    @media (max-width: 480px) {
-      .tag-input-row {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .tag-input-row .btn-add-tag {
-        align-self: flex-start;
-      }
-      .upload-area .preview {
-        flex-direction: column;
-        align-items: center;
-      }
-      .upload-area .preview .file-info {
-        text-align: center;
-      }
-    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f0f4f9;color:#1a2a3a;padding:32px 20px;line-height:1.6}
+    .container{max-width:880px;margin:0 auto;background:white;border-radius:32px;box-shadow:0 20px 60px rgba(0,20,40,0.10);padding:44px 52px}
+    @media(max-width:640px){.container{padding:24px 18px;border-radius:20px}body{padding:14px}}
+    .header{display:flex;align-items:center;gap:16px;margin-bottom:28px;padding-bottom:18px;border-bottom:2px solid #eef2f6;flex-wrap:wrap}
+    .header .logo-icon{width:48px;height:48px;background:#003153;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#f5b01b;font-size:24px;font-weight:700;flex-shrink:0}
+    .header h1{font-size:1.3rem;font-weight:700;color:#003153;letter-spacing:-0.3px}
+    .header .sub{font-size:0.8rem;color:#5a6f84;margin-top:1px}
+    .header .badge-status{margin-left:auto;font-size:0.7rem;font-weight:600;background:#e6f7e6;color:#1e7a3a;padding:5px 14px;border-radius:30px;display:flex;align-items:center;gap:6px;white-space:nowrap}
+    .header .badge-status i{font-size:0.5rem;color:#1e7a3a}
+    .form-group{margin-bottom:22px}
+    .form-group label{display:block;font-weight:600;font-size:0.85rem;color:#1a3a5a;margin-bottom:5px;letter-spacing:0.2px}
+    .form-group label .required{color:#c0392b;margin-left:2px}
+    .form-group .hint{font-size:0.75rem;color:#6b7f94;font-weight:400;margin-top:4px}
+    .form-group input,.form-group select,.form-group textarea{width:100%;padding:11px 16px;border:1.5px solid #dce3ec;border-radius:14px;font-size:0.95rem;font-family:inherit;background:#fafcfe;transition:0.2s;color:#1a2a3a;outline:none}
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#003153;box-shadow:0 0 0 4px rgba(0,49,83,0.08);background:white}
+    .form-group textarea{resize:vertical;min-height:72px}
+    .form-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a6f84' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:44px;cursor:pointer}
+    .form-group select:disabled{background-color:#f5f7fa;cursor:default}
+    .row-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    @media(max-width:600px){.row-2{grid-template-columns:1fr;gap:14px}}
+    .tag-input-wrapper{border:1.5px solid #dce3ec;border-radius:14px;background:#fafcfe;padding:10px 14px;transition:0.2s}
+    .tag-input-wrapper:focus-within{border-color:#003153;box-shadow:0 0 0 4px rgba(0,49,83,0.08);background:white}
+    .tag-input-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .tag-input-row input{flex:1;min-width:140px;border:none!important;padding:6px 4px!important;background:transparent!important;box-shadow:none!important;font-size:0.92rem;outline:none!important}
+    .tag-input-row input::placeholder{color:#a0b4c8}
+    .tag-input-row .btn-add-tag{background:#003153;color:white;border:none;padding:6px 18px;border-radius:30px;font-size:0.75rem;font-weight:600;cursor:pointer;transition:0.15s;white-space:nowrap;font-family:inherit}
+    .tag-input-row .btn-add-tag:hover{background:#00213f;transform:scale(1.02)}
+    .tag-input-row .btn-add-tag:active{transform:scale(0.97)}
+    .tag-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;min-height:32px;padding-top:4px;border-top:1px dashed #e2e8f0}
+    .tag-list:empty{border-top:none;min-height:0;padding-top:0}
+    .tag-item{background:#eef3fa;color:#1a3a5a;font-size:0.78rem;font-weight:500;padding:4px 12px 4px 14px;border-radius:30px;display:inline-flex;align-items:center;gap:8px;border:1px solid #dce3ec;transition:0.15s;animation:tagPop .2s ease}
+    .tag-item .remove-tag{background:none;border:none;color:#8a9db0;cursor:pointer;font-size:1rem;line-height:1;padding:0 2px;transition:0.15s;display:flex;align-items:center;justify-content:center}
+    .tag-item .remove-tag:hover{color:#c0392b;transform:scale(1.2)}
+    @keyframes tagPop{0%{transform:scale(.8);opacity:0}100%{transform:scale(1);opacity:1}}
+    .ref-list{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+    .ref-list .ref-label{font-size:0.65rem;color:#6b7f94;font-weight:500;margin-right:4px;background:#f0f4f9;padding:2px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:4px}
+    .ref-list .ref-item{font-size:0.7rem;color:#2a5a7a;background:#e8f0fe;padding:2px 10px;border-radius:20px;cursor:pointer;transition:0.15s;border:1px solid transparent;white-space:nowrap;max-width:220px;overflow:hidden;text-overflow:ellipsis}
+    .ref-list .ref-item:hover{background:#d4e2fc;border-color:#003153;transform:translateY(-1px)}
+    .ref-list .ref-empty{font-size:0.7rem;color:#a0b4c8;font-style:italic}
+    .upload-area{border:2px dashed #dce3ec;border-radius:16px;padding:24px 20px;text-align:center;background:#fafcfe;transition:0.2s;cursor:pointer;position:relative}
+    .upload-area:hover{border-color:#003153;background:#f5f8fc}
+    .upload-area .icon{font-size:2rem;color:#6b7f94;display:block;margin-bottom:4px}
+    .upload-area .text{font-size:0.9rem;color:#1a3a5a;font-weight:500}
+    .upload-area .sub-text{font-size:0.75rem;color:#6b7f94;margin-top:2px}
+    .upload-area .photo-tip{font-size:0.7rem;color:#2a5a7a;background:#e8f0fe;display:inline-block;padding:2px 14px;border-radius:30px;margin-top:6px}
+    .upload-area input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer}
+    .upload-area .preview{margin-top:12px;display:none;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+    .upload-area .preview .preview-img-wrap{width:100px;height:100px;border-radius:50%;overflow:hidden;border:3px solid #003153;box-shadow:0 4px 16px rgba(0,0,0,0.10);flex-shrink:0;background:#eef2f6;display:flex;align-items:center;justify-content:center}
+    .upload-area .preview .preview-img-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+    .upload-area .preview .file-info{text-align:left;font-size:0.8rem;color:#1a3a5a}
+    .upload-area .preview .file-info .file-name{font-weight:600;word-break:break-all}
+    .upload-area .preview .file-info .file-size{color:#6b7f94;font-size:0.7rem}
+    .upload-area .preview .remove-btn{background:#fde8e8;border:none;color:#a93226;font-size:1.1rem;cursor:pointer;padding:4px 12px;border-radius:30px;transition:0.15s;font-weight:600}
+    .upload-area .preview .remove-btn:hover{background:#fcd0d0}
+    .upload-area.has-file .preview{display:flex}
+    .upload-area.has-file .icon,.upload-area.has-file .text,.upload-area.has-file .sub-text,.upload-area.has-file .photo-tip{display:none}
+    .upload-area.has-file{border-color:#003153;background:#f5f8fc}
+    .upload-status{font-size:0.75rem;color:#1e7a3a;margin-top:6px;display:none;align-items:center;gap:6px}
+    .upload-status.show{display:flex}
+    .form-actions{display:flex;gap:14px;margin-top:28px;padding-top:22px;border-top:2px solid #eef2f6;flex-wrap:wrap;align-items:center}
+    .btn{padding:12px 32px;border:none;border-radius:40px;font-weight:700;font-size:0.9rem;cursor:pointer;transition:0.2s;display:inline-flex;align-items:center;gap:10px;font-family:inherit;letter-spacing:0.2px}
+    .btn-primary{background:#003153;color:white;box-shadow:0 4px 14px rgba(0,49,83,0.20)}
+    .btn-primary:hover{background:#00213f;transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,49,83,0.28)}
+    .btn-secondary{background:#eef2f6;color:#1a3a5a}
+    .btn-secondary:hover{background:#dce3ec}
+    .btn:disabled{opacity:0.6;pointer-events:none;transform:none!important}
+    .notification{padding:14px 20px;border-radius:14px;margin-top:18px;display:none;font-weight:500;font-size:0.9rem;align-items:center;gap:12px}
+    .notification.success{display:flex;background:#e6f7e6;color:#1e7a3a;border-left:4px solid #1e7a3a}
+    .notification.error{display:flex;background:#fde8e8;color:#a93226;border-left:4px solid #a93226}
+    .notification i{font-size:1.2rem}
+    .notification .close-btn{margin-left:auto;background:none;border:none;font-size:1.2rem;cursor:pointer;color:inherit;opacity:0.6;padding:0 4px}
+    .notification .close-btn:hover{opacity:1}
+    .data-preview{margin-top:30px;border-top:2px solid #eef2f6;padding-top:22px}
+    .data-preview .preview-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+    .data-preview .preview-header h3{font-size:0.9rem;color:#1a3a5a;display:flex;align-items:center;gap:10px}
+    .data-preview .preview-header h3 .count{background:#eef2f6;padding:1px 14px;border-radius:30px;font-size:0.75rem;font-weight:600;color:#1a3a5a}
+    .data-preview .preview-header .refresh-btn{background:none;border:none;color:#5a6f84;cursor:pointer;font-size:0.85rem;padding:4px 12px;border-radius:30px;transition:0.15s;display:flex;align-items:center;gap:6px;font-family:inherit}
+    .data-preview .preview-header .refresh-btn:hover{background:#eef2f6;color:#1a3a5a}
+    .data-preview .table-wrap{overflow-x:auto;border-radius:14px;border:1px solid #eef2f6;background:white}
+    .data-preview table{width:100%;border-collapse:collapse;font-size:0.78rem;min-width:560px}
+    .data-preview th{background:#f5f8fc;color:#1a3a5a;font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid #eef2f6;white-space:nowrap}
+    .data-preview td{padding:8px 14px;border-bottom:1px solid #f0f4f9;color:#2a4058;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .data-preview tr:hover td{background:#fafcfe}
+    .data-preview .empty-msg{color:#6b7f94;text-align:center;padding:30px 0;font-size:0.85rem}
+    .data-preview .actions-cell{display:flex;gap:6px}
+    .data-preview .actions-cell button{background:none;border:none;cursor:pointer;color:#6b7f94;padding:3px 8px;border-radius:8px;font-size:0.8rem;transition:0.15s}
+    .data-preview .actions-cell button:hover{background:#eef2f6;color:#1a3a5a}
+    .data-preview .actions-cell button.danger:hover{background:#fde8e8;color:#a93226}
+    .data-preview .photo-thumb{width:30px;height:30px;border-radius:50%;object-fit:cover;border:1px solid #e2e8f0;background:#eef2f6}
+    .spinner{display:inline-block;width:18px;height:18px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @media(max-width:480px){.tag-input-row{flex-direction:column;align-items:stretch}.tag-input-row .btn-add-tag{align-self:flex-start}.upload-area .preview{flex-direction:column;align-items:center}.upload-area .preview .file-info{text-align:center}}
   </style>
 </head>
 <body>
 
-  <div class="container" id="app">
-    <!-- HEADER -->
-    <div class="header">
-      <div class="logo-icon">✈</div>
-      <div>
-        <h1>Data Tenaga Pendidik &amp; Kependidikan</h1>
-        <div class="sub">PPI Curug – Input &amp; Kelola Profil</div>
-      </div>
-      <div class="badge-status" id="statusBadge">
-        <i class="fas fa-circle"></i> Online
-      </div>
+<div class="container" id="app">
+  <div class="header">
+    <div class="logo-icon">✈</div>
+    <div>
+      <h1>Data Tenaga Pendidik &amp; Kependidikan</h1>
+      <div class="sub">PPI Curug – Input &amp; Kelola Profil</div>
     </div>
-
-    <!-- NOTIFICATION -->
-    <div class="notification" id="notification">
-      <i class="fas fa-check-circle"></i>
-      <span id="notifMessage">Data berhasil disimpan!</span>
-      <button class="close-btn" onclick="closeNotif()">&times;</button>
-    </div>
-
-    <!-- FORM -->
-    <form id="staffForm" onsubmit="submitForm(event)">
-
-      <!-- Nama -->
-      <div class="form-group">
-        <label>Nama Lengkap <span class="required">*</span></label>
-        <input type="text" id="name" placeholder="Contoh: Dr. Ahmad Kosasih, S.T., M.T" required />
-        <div class="hint">Tulis gelar dan nama lengkap sesuai ijazah.</div>
-      </div>
-
-      <!-- Row: Jenis + Prodi -->
-      <div class="row-2">
-        <div class="form-group">
-          <label>Jenis Tenaga <span class="required">*</span></label>
-          <select id="type" required>
-            <option value="">— Pilih —</option>
-            <option value="Dosen Tetap">Dosen Tetap</option>
-            <option value="Dosen Tidak Tetap">Dosen Tidak Tetap</option>
-            <option value="Dosen Praktisi">Dosen Praktisi</option>
-            <option value="Instruktur">Instruktur</option>
-            <option value="Pranata Laboratorium Pendidikan">Laboran</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Program Studi <span class="required">*</span></label>
-          <select id="prodi" required>
-            <option value="">— Pilih —</option>
-            <option value="Teknik Listrik Bandara">Teknik Listrik Bandara</option>
-            <option value="Pertolongan Kecelakaan Pesawat">Pertolongan Kecelakaan Pesawat</option>
-            <option value="Teknik Pesawat Udara">Teknik Pesawat Udara</option>
-            <option value="Teknik Mekanikal Bandar Udara">Teknik Mekanikal Bandar Udara</option>
-            <option value="Operasi Bandar Udara">Operasi Bandar Udara</option>
-            <option value="Penerbang">Penerbang</option>
-            <option value="Penerangan Aeronautika">Penerangan Aeronautika</option>
-            <option value="Teknik Bangunan dan Landasan">Teknik Bangunan dan Landasan</option>
-            <option value="Lalu Lintas Udara">Lalu Lintas Udara</option>
-            <option value="Teknik Navigasi Udara">Teknik Navigasi Udara</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Jabatan Fungsional -->
-      <div class="form-group">
-        <label>Jabatan Fungsional <span class="required" id="jabatanRequired">*</span></label>
-        <select id="jabatan">
-          <option value="">— Pilih (opsional untuk DTT &amp; DP) —</option>
-          <option value="Guru Besar">Guru Besar</option>
-          <option value="Lektor Kepala">Lektor Kepala</option>
-          <option value="Lektor">Lektor</option>
-          <option value="Asisten Ahli">Asisten Ahli</option>
-        </select>
-        <div class="hint" id="jabatanHint">Wajib untuk Dosen Tetap. Opsional untuk Dosen Tidak Tetap dan Dosen Praktisi.</div>
-      </div>
-
-      <!-- Instansi (khusus Praktisi) -->
-      <div class="form-group" id="instansiGroup" style="display:none;">
-        <label>Instansi / Perusahaan <span class="required">*</span></label>
-        <input type="text" id="instansi" placeholder="Contoh: Garuda Indonesia, AirNav Indonesia" />
-        <div class="hint">Diisi jika Jenis Tenaga = Dosen Praktisi.</div>
-      </div>
-
-      <!-- Bio -->
-      <div class="form-group">
-        <label>Biografi Singkat</label>
-        <textarea id="bio" rows="3" placeholder="Tulis profil singkat, pengalaman, dan keahlian utama..."></textarea>
-        <div class="hint">Maksimal 200 kata. Akan ditampilkan di kartu profil.</div>
-      </div>
-
-      <!-- PENDIDIKAN -->
-      <div class="form-group">
-        <label>Pendidikan <span class="required">*</span></label>
-        <div class="tag-input-wrapper">
-          <div class="tag-input-row">
-            <input type="text" id="eduInput" placeholder="Contoh: S2 Teknik Penerbangan - ITB" />
-            <button type="button" class="btn-add-tag" onclick="addTag('edu')">+ Tambah</button>
-          </div>
-          <div class="tag-list" id="eduTagList"></div>
-        </div>
-        <div class="hint">Masukkan program studi dan kampus. Klik + untuk menambahkan.</div>
-        <div class="ref-list" id="eduRefList"></div>
-      </div>
-
-      <!-- SERTIFIKAT KOMPETENSI -->
-      <div class="form-group">
-        <label>Sertifikat Kompetensi</label>
-        <div class="tag-input-wrapper">
-          <div class="tag-input-row">
-            <input type="text" id="certInput" placeholder="Contoh: Sertifikat Instalasi Listrik Bandara" />
-            <button type="button" class="btn-add-tag" onclick="addTag('cert')">+ Tambah</button>
-          </div>
-          <div class="tag-list" id="certTagList"></div>
-        </div>
-        <div class="hint">Masukkan sertifikat yang dimiliki. Kosongkan jika tidak ada.</div>
-        <div class="ref-list" id="certRefList"></div>
-      </div>
-
-      <!-- MATA KULIAH -->
-      <div class="form-group">
-        <label>Mata Kuliah yang Diampu</label>
-        <div class="tag-input-wrapper">
-          <div class="tag-input-row">
-            <input type="text" id="courseInput" placeholder="Contoh: Sistem Tenaga Bandara" />
-            <button type="button" class="btn-add-tag" onclick="addTag('course')">+ Tambah</button>
-          </div>
-          <div class="tag-list" id="courseTagList"></div>
-        </div>
-        <div class="hint">Masukkan mata kuliah yang diampu. Kosongkan jika tidak mengajar.</div>
-        <div class="ref-list" id="courseRefList"></div>
-      </div>
-
-      <!-- KEPAKARAN -->
-      <div class="form-group">
-        <label>Kepakaran</label>
-        <div class="tag-input-wrapper">
-          <div class="tag-input-row">
-            <input type="text" id="expertiseInput" placeholder="Contoh: Sistem tenaga bandara" />
-            <button type="button" class="btn-add-tag" onclick="addTag('expertise')">+ Tambah</button>
-          </div>
-          <div class="tag-list" id="expertiseTagList"></div>
-        </div>
-        <div class="hint">Masukkan bidang kepakaran. Kosongkan jika tidak ada.</div>
-        <div class="ref-list" id="expertiseRefList"></div>
-      </div>
-
-      <!-- Upload Foto -->
-      <div class="form-group">
-        <label>Foto Profil</label>
-        <div class="upload-area" id="uploadArea">
-          <span class="icon">📷</span>
-          <div class="text">Klik atau seret foto di sini</div>
-          <div class="sub-text">Format JPG, PNG, WEBP. Maks 5 MB.</div>
-          <div class="photo-tip">📸 Pastikan wajah terlihat jelas dan posisi tegak</div>
-          <input type="file" id="photoInput" accept="image/*" onchange="handleFile(event)" />
-          <div class="preview" id="previewArea">
-            <div class="preview-img-wrap">
-              <img id="previewImg" src="#" alt="Preview" />
-            </div>
-            <div class="file-info">
-              <div class="file-name" id="fileName"></div>
-              <div class="file-size" id="fileSize"></div>
-            </div>
-            <button type="button" class="remove-btn" onclick="removeFile()">✕ Hapus</button>
-          </div>
-        </div>
-        <div class="upload-status" id="uploadStatus">
-          <span>✓</span> Foto siap diunggah
-        </div>
-        <div class="hint">Foto akan di-crop menjadi persegi dan diunggah ke Google Drive.</div>
-      </div>
-
-      <!-- Submit -->
-      <div class="form-actions">
-        <button type="submit" class="btn btn-primary" id="submitBtn">
-          <i class="fas fa-save"></i> Simpan Data
-        </button>
-        <button type="reset" class="btn btn-secondary" onclick="resetForm()">
-          <i class="fas fa-undo"></i> Reset
-        </button>
-        <button type="button" class="btn btn-secondary" onclick="loadData()" style="margin-left:auto;">
-          <i class="fas fa-sync"></i> Muat Ulang
-        </button>
-      </div>
-    </form>
-
-    <!-- DATA PREVIEW -->
-    <div class="data-preview">
-      <div class="preview-header">
-        <h3>
-          <i class="fas fa-table"></i> Data Tersimpan
-          <span class="count" id="rowCount">0</span>
-        </h3>
-        <span style="font-size:0.7rem;color:#6b7f94;" id="lastUpdate"></span>
-      </div>
-      <div class="table-wrap">
-        <div id="tableContainer">
-          <div class="empty-msg">Belum ada data. Silakan tambahkan entri pertama.</div>
-        </div>
-      </div>
-    </div>
-
+    <div class="badge-status" id="statusBadge"><i class="fas fa-circle"></i> Online</div>
   </div>
 
-  <script>
-    // ============================================================
-    //  CONFIGURATION
-    // ============================================================
-    const API_URL = 'https://script.google.com/macros/s/AKfycbwlXJYX7NTl4dZfyqQCWPxOP-esIV9dyExQYyrJuOX58Em2JZkPq2BB5n2HAkRpnBSe/exec';
-    const USE_MOCK = false;
+  <div class="notification" id="notification">
+    <i class="fas fa-check-circle"></i>
+    <span id="notifMessage">Data berhasil disimpan!</span>
+    <button class="close-btn" onclick="closeNotif()">&times;</button>
+  </div>
 
-    // ============================================================
-    //  STATE
-    // ============================================================
-    let allData = [];
-    let selectedFile = null;
-    let croppedFileData = null;
-    let uploadedFileUrl = '';
+  <form id="staffForm" onsubmit="submitForm(event)">
 
-    const tags = {
-      edu: [],
-      cert: [],
-      course: [],
-      expertise: []
+    <div class="form-group">
+      <label>Nama Lengkap <span class="required">*</span></label>
+      <input type="text" id="name" placeholder="Contoh: Dr. Ahmad Kosasih, S.T., M.T" required />
+      <div class="hint">Tulis gelar dan nama lengkap sesuai ijazah.</div>
+    </div>
+
+    <div class="row-2">
+      <div class="form-group">
+        <label>Jenis Tenaga <span class="required">*</span></label>
+        <select id="type" required>
+          <option value="">— Pilih —</option>
+          <option value="Dosen Tetap">Dosen Tetap</option>
+          <option value="Dosen Tidak Tetap">Dosen Tidak Tetap</option>
+          <option value="Dosen Praktisi">Dosen Praktisi</option>
+          <option value="Instruktur">Instruktur</option>
+          <option value="Pranata Laboratorium Pendidikan">Laboran</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Program Studi <span class="required">*</span></label>
+        <select id="prodi" required>
+          <option value="">— Pilih —</option>
+          <option value="Teknik Listrik Bandara">Teknik Listrik Bandara</option>
+          <option value="Pertolongan Kecelakaan Pesawat">Pertolongan Kecelakaan Pesawat</option>
+          <option value="Teknik Pesawat Udara">Teknik Pesawat Udara</option>
+          <option value="Teknik Mekanikal Bandar Udara">Teknik Mekanikal Bandar Udara</option>
+          <option value="Operasi Bandar Udara">Operasi Bandar Udara</option>
+          <option value="Penerbang">Penerbang</option>
+          <option value="Penerangan Aeronautika">Penerangan Aeronautika</option>
+          <option value="Teknik Bangunan dan Landasan">Teknik Bangunan dan Landasan</option>
+          <option value="Lalu Lintas Udara">Lalu Lintas Udara</option>
+          <option value="Teknik Navigasi Udara">Teknik Navigasi Udara</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Jabatan Fungsional <span class="required" id="jabatanRequired">*</span></label>
+      <select id="jabatan">
+        <option value="">— Pilih (opsional untuk DTT &amp; DP) —</option>
+        <option value="Guru Besar">Guru Besar</option>
+        <option value="Lektor Kepala">Lektor Kepala</option>
+        <option value="Lektor">Lektor</option>
+        <option value="Asisten Ahli">Asisten Ahli</option>
+      </select>
+      <div class="hint" id="jabatanHint">Wajib untuk Dosen Tetap. Opsional untuk Dosen Tidak Tetap dan Dosen Praktisi.</div>
+    </div>
+
+    <div class="form-group" id="instansiGroup" style="display:none;">
+      <label>Instansi / Perusahaan <span class="required">*</span></label>
+      <input type="text" id="instansi" placeholder="Contoh: Garuda Indonesia, AirNav Indonesia" />
+      <div class="hint">Diisi jika Jenis Tenaga = Dosen Praktisi.</div>
+    </div>
+
+    <div class="form-group">
+      <label>Biografi Singkat</label>
+      <textarea id="bio" rows="3" placeholder="Tulis profil singkat, pengalaman, dan keahlian utama..."></textarea>
+      <div class="hint">Maksimal 200 kata. Akan ditampilkan di kartu profil.</div>
+    </div>
+
+    <div class="form-group">
+      <label>Pendidikan <span class="required">*</span></label>
+      <div class="tag-input-wrapper">
+        <div class="tag-input-row">
+          <input type="text" id="eduInput" placeholder="Contoh: S2 Teknik Penerbangan - ITB" />
+          <button type="button" class="btn-add-tag" onclick="addTag('edu')">+ Tambah</button>
+        </div>
+        <div class="tag-list" id="eduTagList"></div>
+      </div>
+      <div class="hint">Masukkan program studi dan kampus. Klik + untuk menambahkan.</div>
+      <div class="ref-list" id="eduRefList"></div>
+    </div>
+
+    <div class="form-group">
+      <label>Sertifikat Kompetensi</label>
+      <div class="tag-input-wrapper">
+        <div class="tag-input-row">
+          <input type="text" id="certInput" placeholder="Contoh: Sertifikat Instalasi Listrik Bandara" />
+          <button type="button" class="btn-add-tag" onclick="addTag('cert')">+ Tambah</button>
+        </div>
+        <div class="tag-list" id="certTagList"></div>
+      </div>
+      <div class="hint">Masukkan sertifikat yang dimiliki. Kosongkan jika tidak ada.</div>
+      <div class="ref-list" id="certRefList"></div>
+    </div>
+
+    <div class="form-group">
+      <label>Mata Kuliah yang Diampu</label>
+      <div class="tag-input-wrapper">
+        <div class="tag-input-row">
+          <input type="text" id="courseInput" placeholder="Contoh: Sistem Tenaga Bandara" />
+          <button type="button" class="btn-add-tag" onclick="addTag('course')">+ Tambah</button>
+        </div>
+        <div class="tag-list" id="courseTagList"></div>
+      </div>
+      <div class="hint">Masukkan mata kuliah yang diampu. Kosongkan jika tidak mengajar.</div>
+      <div class="ref-list" id="courseRefList"></div>
+    </div>
+
+    <div class="form-group">
+      <label>Kepakaran</label>
+      <div class="tag-input-wrapper">
+        <div class="tag-input-row">
+          <input type="text" id="expertiseInput" placeholder="Contoh: Sistem tenaga bandara" />
+          <button type="button" class="btn-add-tag" onclick="addTag('expertise')">+ Tambah</button>
+        </div>
+        <div class="tag-list" id="expertiseTagList"></div>
+      </div>
+      <div class="hint">Masukkan bidang kepakaran. Kosongkan jika tidak ada.</div>
+      <div class="ref-list" id="expertiseRefList"></div>
+    </div>
+
+    <div class="form-group">
+      <label>Foto Profil</label>
+      <div class="upload-area" id="uploadArea">
+        <span class="icon">📷</span>
+        <div class="text">Klik atau seret foto di sini</div>
+        <div class="sub-text">Format JPG, PNG, WEBP. Maks 5 MB.</div>
+        <div class="photo-tip">📸 Pastikan wajah terlihat jelas dan posisi tegak</div>
+        <input type="file" id="photoInput" accept="image/*" onchange="handleFile(event)" />
+        <div class="preview" id="previewArea">
+          <div class="preview-img-wrap"><img id="previewImg" src="#" alt="Preview" /></div>
+          <div class="file-info">
+            <div class="file-name" id="fileName"></div>
+            <div class="file-size" id="fileSize"></div>
+          </div>
+          <button type="button" class="remove-btn" onclick="removeFile()">✕ Hapus</button>
+        </div>
+      </div>
+      <div class="upload-status" id="uploadStatus"><span>✓</span> Foto siap diunggah</div>
+      <div class="hint">Foto akan di-crop menjadi persegi dan diunggah ke Google Drive.</div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary" id="submitBtn"><i class="fas fa-save"></i> Simpan Data</button>
+      <button type="reset" class="btn btn-secondary" onclick="resetForm()"><i class="fas fa-undo"></i> Reset</button>
+      <button type="button" class="btn btn-secondary" onclick="loadData()" style="margin-left:auto;"><i class="fas fa-sync"></i> Muat Ulang</button>
+    </div>
+  </form>
+
+  <div class="data-preview">
+    <div class="preview-header">
+      <h3><i class="fas fa-table"></i> Data Tersimpan <span class="count" id="rowCount">0</span></h3>
+      <span style="font-size:0.7rem;color:#6b7f94;" id="lastUpdate"></span>
+    </div>
+    <div class="table-wrap">
+      <div id="tableContainer"><div class="empty-msg">Belum ada data. Silakan tambahkan entri pertama.</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbwlXJYX7NTl4dZfyqQCWPxOP-esIV9dyExQYyrJuOX58Em2JZkPq2BB5n2HAkRpnBSe/exec';
+const USE_MOCK = false;
+
+let allData = [];
+let selectedFile = null;
+let croppedFileData = null;
+let uploadedFileUrl = '';
+const tags = { edu: [], cert: [], course: [], expertise: [] };
+
+const $ = id => document.getElementById(id);
+const nameEl = $('name'), typeEl = $('type'), prodiEl = $('prodi'), jabatanEl = $('jabatan');
+const instansiEl = $('instansi'), bioEl = $('bio'), photoInput = $('photoInput');
+const previewImg = $('previewImg'), fileNameEl = $('fileName'), fileSizeEl = $('fileSize');
+const uploadArea = $('uploadArea'), uploadStatus = $('uploadStatus');
+const notif = $('notification'), notifMsg = $('notifMessage'), submitBtn = $('submitBtn');
+
+const tagConfig = {
+  edu: { inputId: 'eduInput', listId: 'eduTagList', refId: 'eduRefList' },
+  cert: { inputId: 'certInput', listId: 'certTagList', refId: 'certRefList' },
+  course: { inputId: 'courseInput', listId: 'courseTagList', refId: 'courseRefList' },
+  expertise: { inputId: 'expertiseInput', listId: 'expertiseTagList', refId: 'expertiseRefList' }
+};
+
+function addTag(field) {
+  const cfg = tagConfig[field];
+  const input = $(cfg.inputId);
+  const val = input.value.trim();
+  if (!val) { showNotif('error', 'Harap isi nilai terlebih dahulu.'); return; }
+  if (tags[field].includes(val)) { showNotif('error', '"' + val + '" sudah ada dalam daftar.'); return; }
+  tags[field].push(val);
+  renderTags(field);
+  input.value = '';
+  input.focus();
+  closeNotif();
+}
+
+function removeTag(field, index) {
+  tags[field].splice(index, 1);
+  renderTags(field);
+}
+
+function renderTags(field) {
+  const cfg = tagConfig[field];
+  const list = $(cfg.listId);
+  if (!list) return;
+  list.innerHTML = tags[field].map((t, i) =>
+    `<span class="tag-item">${t}<button type="button" class="remove-tag" onclick="removeTag('${field}', ${i})">✕</button></span>`
+  ).join('');
+}
+
+function addTagFromRef(field, value) {
+  if (tags[field].includes(value)) { showNotif('error', '"' + value + '" sudah ada dalam daftar.'); return; }
+  tags[field].push(value);
+  renderTags(field);
+  closeNotif();
+}
+
+function renderRefList(field, values) {
+  const cfg = tagConfig[field];
+  const container = $(cfg.refId);
+  if (!container) return;
+  if (!values || values.length === 0) {
+    container.innerHTML = `<span class="ref-empty">Belum ada data dari pengguna lain. Anda bisa menambahkan yang pertama!</span>`;
+    return;
+  }
+  const unique = [...new Set(values)].filter(v => v && v.trim()).sort((a, b) => a.localeCompare(b));
+  if (unique.length === 0) {
+    container.innerHTML = `<span class="ref-empty">Belum ada data dari pengguna lain. Anda bisa menambahkan yang pertama!</span>`;
+    return;
+  }
+  container.innerHTML = `
+    <span class="ref-label">📋 Dari database:</span>
+    ${unique.map(v => `<span class="ref-item" onclick="addTagFromRef('${field}', '${v.replace(/'/g, "\\'")}')">${v}</span>`).join('')}
+  `;
+}
+
+typeEl.addEventListener('change', function() {
+  const val = this.value;
+  const instGroup = $('instansiGroup');
+  const jabReq = $('jabatanRequired');
+  const jabHint = $('jabatanHint');
+  if (val === 'Dosen Praktisi') {
+    instGroup.style.display = 'block';
+    instansiEl.required = true;
+  } else {
+    instGroup.style.display = 'none';
+    instansiEl.required = false;
+    instansiEl.value = '';
+  }
+  if (val === 'Dosen Tetap') {
+    jabReq.textContent = '*';
+    jabReq.style.color = '#c0392b';
+    jabatanEl.required = true;
+    jabHint.textContent = 'Wajib untuk Dosen Tetap.';
+    jabatanEl.innerHTML = `<option value="">— Pilih —</option><option value="Guru Besar">Guru Besar</option><option value="Lektor Kepala">Lektor Kepala</option><option value="Lektor">Lektor</option><option value="Asisten Ahli">Asisten Ahli</option>`;
+  } else if (val === 'Dosen Tidak Tetap' || val === 'Dosen Praktisi') {
+    jabReq.textContent = '(opsional)';
+    jabReq.style.color = '#6b7f94';
+    jabatanEl.required = false;
+    jabHint.textContent = 'Opsional untuk Dosen Tidak Tetap dan Dosen Praktisi.';
+    jabatanEl.innerHTML = `<option value="">— Pilih (opsional) —</option><option value="Guru Besar">Guru Besar</option><option value="Lektor Kepala">Lektor Kepala</option><option value="Lektor">Lektor</option><option value="Asisten Ahli">Asisten Ahli</option>`;
+  } else if (val === 'Instruktur') {
+    jabReq.textContent = '(otomatis)';
+    jabReq.style.color = '#6b7f94';
+    jabatanEl.required = false;
+    jabHint.textContent = 'Untuk Instruktur, jabatan diatur otomatis.';
+    jabatanEl.innerHTML = `<option value="Instruktur">Instruktur</option>`;
+    jabatanEl.value = 'Instruktur';
+  } else if (val === 'Pranata Laboratorium Pendidikan') {
+    jabReq.textContent = '(otomatis)';
+    jabReq.style.color = '#6b7f94';
+    jabatanEl.required = false;
+    jabHint.textContent = 'Untuk Laboran, jabatan diatur otomatis.';
+    jabatanEl.innerHTML = `<option value="Pranata Laboratorium Pendidikan">Pranata Laboratorium Pendidikan</option>`;
+    jabatanEl.value = 'Pranata Laboratorium Pendidikan';
+  } else {
+    jabReq.textContent = '*';
+    jabReq.style.color = '#c0392b';
+    jabatanEl.required = true;
+    jabHint.textContent = 'Pilih jabatan fungsional.';
+    jabatanEl.innerHTML = `<option value="">— Pilih —</option><option value="Guru Besar">Guru Besar</option><option value="Lektor Kepala">Lektor Kepala</option><option value="Lektor">Lektor</option><option value="Asisten Ahli">Asisten Ahli</option>`;
+  }
+});
+
+function handleFile(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { alert('Ukuran file maksimal 5 MB.'); photoInput.value = ''; return; }
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      const size = Math.min(img.width, img.height);
+      const sx = (img.width - size) / 2;
+      const sy = (img.height - size) / 2;
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, sx, sy, size, size, 0, 0, size, size);
+      const base64 = canvas.toDataURL(file.type || 'image/jpeg', 0.92);
+      croppedFileData = base64;
+      selectedFile = file;
+      previewImg.src = base64;
+      fileNameEl.textContent = file.name;
+      fileSizeEl.textContent = (file.size / 1024 / 1024).toFixed(1) + ' MB (crop ke persegi)';
+      uploadArea.classList.add('has-file');
+      uploadStatus.classList.add('show');
+      uploadStatus.innerHTML = '<span>✓</span> Foto siap diunggah (persegi)';
     };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
 
-    // ============================================================
-    //  DOM REFS
-    // ============================================================
-    const $ = id => document.getElementById(id);
-    const nameEl = $('name');
-    const typeEl = $('type');
-    const prodiEl = $('prodi');
-    const jabatanEl = $('jabatan');
-    const instansiEl = $('instansi');
-    const bioEl = $('bio');
-    const photoInput = $('photoInput');
-    const previewImg = $('previewImg');
-    const fileNameEl = $('fileName');
-    const fileSizeEl = $('fileSize');
-    const uploadArea = $('uploadArea');
-    const uploadStatus = $('uploadStatus');
-    const notif = $('notification');
-    const notifMsg = $('notifMessage');
-    const submitBtn = $('submitBtn');
+function removeFile() {
+  selectedFile = null;
+  croppedFileData = null;
+  uploadedFileUrl = '';
+  photoInput.value = '';
+  uploadArea.classList.remove('has-file');
+  uploadStatus.classList.remove('show');
+  previewImg.src = '#';
+  fileNameEl.textContent = '';
+  fileSizeEl.textContent = '';
+}
 
-    // ============================================================
-    //  TAG SYSTEM
-    // ============================================================
-    const tagConfig = {
-      edu: { inputId: 'eduInput', listId: 'eduTagList', refId: 'eduRefList' },
-      cert: { inputId: 'certInput', listId: 'certTagList', refId: 'certRefList' },
-      course: { inputId: 'courseInput', listId: 'courseTagList', refId: 'courseRefList' },
-      expertise: { inputId: 'expertiseInput', listId: 'expertiseTagList', refId: 'expertiseRefList' }
-    };
+function getFormData() {
+  const name = nameEl.value.trim();
+  const type = typeEl.value;
+  const prodi = prodiEl.value;
+  let jabatan = jabatanEl.value;
+  if (type === 'Instruktur') jabatan = 'Instruktur';
+  if (type === 'Pranata Laboratorium Pendidikan') jabatan = 'Pranata Laboratorium Pendidikan';
+  const instansi = instansiEl.value.trim() || '';
+  const bio = bioEl.value.trim() || '';
+  if (tags.edu.length === 0) { showNotif('error', 'Minimal tambahkan satu Pendidikan.'); return null; }
+  if (type === 'Dosen Tetap' && !jabatan) { showNotif('error', 'Untuk Dosen Tetap, Jabatan Fungsional wajib diisi.'); return null; }
+  if (type === 'Dosen Praktisi' && !instansi) { showNotif('error', 'Untuk Dosen Praktisi, Instansi / Perusahaan wajib diisi.'); return null; }
+  return {
+    name, type, prodi, jabatan, instansi, bio,
+    pendidikan: tags.edu,
+    sertifikat: tags.cert,
+    mataKuliah: tags.course,
+    kepakaran: tags.expertise,
+    photo: uploadedFileUrl || '',
+    photoBase64: croppedFileData || ''
+  };
+}
 
-    function addTag(field) {
-      const cfg = tagConfig[field];
-      const input = $(cfg.inputId);
-      const val = input.value.trim();
-      if (!val) {
-        showNotif('error', 'Harap isi nilai terlebih dahulu.');
-        return;
-      }
-      if (tags[field].includes(val)) {
-        showNotif('error', '"' + val + '" sudah ada dalam daftar.');
-        return;
-      }
-      tags[field].push(val);
-      renderTags(field);
-      input.value = '';
-      input.focus();
-      closeNotif();
-    }
-
-    function removeTag(field, index) {
-      tags[field].splice(index, 1);
-      renderTags(field);
-    }
-
-    function renderTags(field) {
-      const cfg = tagConfig[field];
-      const list = $(cfg.listId);
-      if (!list) return;
-      list.innerHTML = tags[field].map((t, i) =>
-        `<span class="tag-item">
-              ${t}
-              <button type="button" class="remove-tag" onclick="removeTag('${field}', ${i})">✕</button>
-            </span>`
-      ).join('');
-    }
-
-    function addTagFromRef(field, value) {
-      if (tags[field].includes(value)) {
-        showNotif('error', '"' + value + '" sudah ada dalam daftar.');
-        return;
-      }
-      tags[field].push(value);
-      renderTags(field);
-      closeNotif();
-    }
-
-    // ============================================================
-    //  REFERENCE LISTS (from database)
-    // ============================================================
-    function renderRefList(field, values) {
-      const cfg = tagConfig[field];
-      const container = $(cfg.refId);
-      if (!container) return;
-      if (!values || values.length === 0) {
-        container.innerHTML =
-          `<span class="ref-empty">Belum ada data dari pengguna lain. Anda bisa menambahkan yang pertama!</span>`;
-        return;
-      }
-      const unique = [...new Set(values)].filter(v => v && v.trim()).sort((a, b) => a.localeCompare(b));
-      if (unique.length === 0) {
-        container.innerHTML =
-          `<span class="ref-empty">Belum ada data dari pengguna lain. Anda bisa menambahkan yang pertama!</span>`;
-        return;
-      }
-      container.innerHTML = `
-            <span class="ref-label">📋 Dari database:</span>
-            ${unique.map(v => `<span class="ref-item" onclick="addTagFromRef('${field}', '${v.replace(/'/g, "\\'")}')">${v}</span>`).join('')}
-          `;
-    }
-
-    // ============================================================
-    //  TYPE → JABATAN logic
-    // ============================================================
-    typeEl.addEventListener('change', function() {
-      const val = this.value;
-      const instGroup = $('instansiGroup');
-      const jabReq = $('jabatanRequired');
-      const jabHint = $('jabatanHint');
-
-      if (val === 'Dosen Praktisi') {
-        instGroup.style.display = 'block';
-        instansiEl.required = true;
-      } else {
-        instGroup.style.display = 'none';
-        instansiEl.required = false;
-        instansiEl.value = '';
-      }
-
-      if (val === 'Dosen Tetap') {
-        jabReq.textContent = '*';
-        jabReq.style.color = '#c0392b';
-        jabatanEl.required = true;
-        jabHint.textContent = 'Wajib untuk Dosen Tetap.';
-        jabatanEl.innerHTML = `
-              <option value="">— Pilih —</option>
-              <option value="Guru Besar">Guru Besar</option>
-              <option value="Lektor Kepala">Lektor Kepala</option>
-              <option value="Lektor">Lektor</option>
-              <option value="Asisten Ahli">Asisten Ahli</option>
-            `;
-      } else if (val === 'Dosen Tidak Tetap' || val === 'Dosen Praktisi') {
-        jabReq.textContent = '(opsional)';
-        jabReq.style.color = '#6b7f94';
-        jabatanEl.required = false;
-        jabHint.textContent = 'Opsional untuk Dosen Tidak Tetap dan Dosen Praktisi.';
-        jabatanEl.innerHTML = `
-              <option value="">— Pilih (opsional) —</option>
-              <option value="Guru Besar">Guru Besar</option>
-              <option value="Lektor Kepala">Lektor Kepala</option>
-              <option value="Lektor">Lektor</option>
-              <option value="Asisten Ahli">Asisten Ahli</option>
-            `;
-      } else if (val === 'Instruktur') {
-        jabReq.textContent = '(otomatis)';
-        jabReq.style.color = '#6b7f94';
-        jabatanEl.required = false;
-        jabHint.textContent = 'Untuk Instruktur, jabatan diatur otomatis.';
-        jabatanEl.innerHTML = `<option value="Instruktur">Instruktur</option>`;
-        jabatanEl.value = 'Instruktur';
-      } else if (val === 'Pranata Laboratorium Pendidikan') {
-        jabReq.textContent = '(otomatis)';
-        jabReq.style.color = '#6b7f94';
-        jabatanEl.required = false;
-        jabHint.textContent = 'Untuk Laboran, jabatan diatur otomatis.';
-        jabatanEl.innerHTML = `<option value="Pranata Laboratorium Pendidikan">Pranata Laboratorium Pendidikan</option>`;
-        jabatanEl.value = 'Pranata Laboratorium Pendidikan';
-      } else {
-        jabReq.textContent = '*';
-        jabReq.style.color = '#c0392b';
-        jabatanEl.required = true;
-        jabHint.textContent = 'Pilih jabatan fungsional.';
-        jabatanEl.innerHTML = `
-              <option value="">— Pilih —</option>
-              <option value="Guru Besar">Guru Besar</option>
-              <option value="Lektor Kepala">Lektor Kepala</option>
-              <option value="Lektor">Lektor</option>
-              <option value="Asisten Ahli">Asisten Ahli</option>
-            `;
-      }
-    });
-
-    // ============================================================
-    //  PHOTO UPLOAD – with square crop (base64)
-    // ============================================================
-    function handleFile(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      if (file.size > 5 * 1024 * 1024) {
-        alert('Ukuran file maksimal 5 MB.');
-        photoInput.value = '';
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = function(ev) {
-        const img = new Image();
-        img.onload = function() {
-          const canvas = document.createElement('canvas');
-          const size = Math.min(img.width, img.height);
-          const sx = (img.width - size) / 2;
-          const sy = (img.height - size) / 2;
-          canvas.width = size;
-          canvas.height = size;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, sx, sy, size, size, 0, 0, size, size);
-
-          const base64 = canvas.toDataURL(file.type || 'image/jpeg', 0.92);
-          croppedFileData = base64;
-          selectedFile = file;
-
-          previewImg.src = base64;
-          fileNameEl.textContent = file.name;
-          fileSizeEl.textContent = (file.size / 1024 / 1024).toFixed(1) + ' MB (crop ke persegi)';
-          uploadArea.classList.add('has-file');
-          uploadStatus.classList.add('show');
-          uploadStatus.innerHTML = '<span>✓</span> Foto siap diunggah (persegi)';
-        };
-        img.src = ev.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function removeFile() {
-      selectedFile = null;
-      croppedFileData = null;
-      uploadedFileUrl = '';
-      photoInput.value = '';
-      uploadArea.classList.remove('has-file');
-      uploadStatus.classList.remove('show');
-      previewImg.src = '#';
-      fileNameEl.textContent = '';
-      fileSizeEl.textContent = '';
-    }
-
-    // ============================================================
-    //  GET DATA FROM FORM
-    // ============================================================
-    function getFormData() {
-      const name = nameEl.value.trim();
-      const type = typeEl.value;
-      const prodi = prodiEl.value;
-      let jabatan = jabatanEl.value;
-
-      if (type === 'Instruktur') jabatan = 'Instruktur';
-      if (type === 'Pranata Laboratorium Pendidikan') jabatan = 'Pranata Laboratorium Pendidikan';
-
-      const instansi = instansiEl.value.trim() || '';
-      const bio = bioEl.value.trim() || '';
-
-      if (tags.edu.length === 0) {
-        showNotif('error', 'Minimal tambahkan satu Pendidikan.');
-        return null;
-      }
-
-      if (type === 'Dosen Tetap' && !jabatan) {
-        showNotif('error', 'Untuk Dosen Tetap, Jabatan Fungsional wajib diisi.');
-        return null;
-      }
-
-      if (type === 'Dosen Praktisi' && !instansi) {
-        showNotif('error', 'Untuk Dosen Praktisi, Instansi / Perusahaan wajib diisi.');
-        return null;
-      }
-
-      return {
-        name,
-        type,
-        prodi,
-        jabatan,
-        instansi,
-        bio,
-        pendidikan: tags.edu,
-        sertifikat: tags.cert,
-        mataKuliah: tags.course,
-        kepakaran: tags.expertise,
-        photo: uploadedFileUrl || '',
-        photoBase64: croppedFileData || ''
-      };
-    }
-
-    // ============================================================
-    //  SUBMIT – CORS FIX (FormData & URL-encoded)
-    // ============================================================
-    async function submitForm(e) {
-      e.preventDefault();
-
-      const data = getFormData();
-      if (!data) return;
-
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<span class="spinner"></span> Menyimpan...';
-
-      try {
-        let photoUrl = uploadedFileUrl;
-
-        // 1. Upload photo if new
-        if (croppedFileData && !uploadedFileUrl) {
-          if (USE_MOCK) {
-            await new Promise(r => setTimeout(r, 600));
-            photoUrl = 'https://picsum.photos/seed/' + Date.now() + '/200/200';
-          } else {
-            // Convert base64 to Blob
-            const blob = await fetch(croppedFileData).then(r => r.blob());
-            const formData = new FormData();
-            formData.append('file', blob, 'foto.jpg');
-            formData.append('name', data.name);
-
-            const uploadResp = await fetch(API_URL + '?action=upload', {
-              method: 'POST',
-              body: formData  // multipart – no preflight
-            });
-            const uploadResult = await uploadResp.json();
-            if (uploadResult.success) {
-              photoUrl = uploadResult.url;
-              uploadedFileUrl = photoUrl;
-            } else {
-              throw new Error(uploadResult.message || 'Gagal upload foto.');
-            }
-          }
-        }
-
-        data.photo = photoUrl;
-
-        // 2. Save main data – using URL-encoded POST
-        if (USE_MOCK) {
-          await new Promise(r => setTimeout(r, 500));
-          const mockId = Date.now();
-          allData.push({ id: mockId, ...data });
-          renderTable();
-          showNotif('success', 'Data berhasil disimpan (mock mode).');
-          resetForm();
-        } else {
-          const params = new URLSearchParams();
-          params.append('action', 'save');
-          params.append('name', data.name);
-          params.append('type', data.type);
-          params.append('prodi', data.prodi);
-          params.append('jabatan', data.jabatan);
-          params.append('instansi', data.instansi);
-          params.append('bio', data.bio);
-          params.append('pendidikan', JSON.stringify(data.pendidikan));
-          params.append('sertifikat', JSON.stringify(data.sertifikat));
-          params.append('mataKuliah', JSON.stringify(data.mataKuliah));
-          params.append('kepakaran', JSON.stringify(data.kepakaran));
-          params.append('photo', data.photo);
-
-          const saveResp = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: params.toString()
-          });
-          const saveResult = await saveResp.json();
-          if (saveResult.success) {
-            showNotif('success', 'Data berhasil disimpan!');
-            resetForm();
-            loadData();
-          } else {
-            throw new Error(saveResult.message || 'Gagal menyimpan data.');
-          }
-        }
-
-      } catch (err) {
-        showNotif('error', 'Terjadi kesalahan: ' + err.message);
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fas fa-save"></i> Simpan Data';
-      }
-    }
-
-    // ============================================================
-    //  LOAD DATA
-    // ============================================================
-    async function loadData() {
-      try {
-        if (USE_MOCK) { renderTable();
-          buildRefListsFromData(); return; }
-        const resp = await fetch(API_URL + '?action=list');
-        const result = await resp.json();
-        if (result.success) {
-          allData = result.data || [];
-          renderTable();
-          buildRefListsFromData();
-        } else {
-          showNotif('error', 'Gagal memuat data: ' + (result.message || ''));
-        }
-      } catch (err) {
-        showNotif('error', 'Gagal memuat data: ' + err.message);
-      }
-    }
-
-    // ============================================================
-    //  BUILD REFERENCE LISTS
-    // ============================================================
-    function buildRefListsFromData() {
-      const eduValues = [],
-        certValues = [],
-        courseValues = [],
-        expValues = [];
-
-      allData.forEach(row => {
-        if (row.pendidikan && Array.isArray(row.pendidikan)) {
-          row.pendidikan.forEach(v => { if (v && v.trim()) eduValues.push(v.trim()); });
-        }
-        if (row.sertifikat && Array.isArray(row.sertifikat)) {
-          row.sertifikat.forEach(v => { if (v && v.trim()) certValues.push(v.trim()); });
-        }
-        if (row.mataKuliah && Array.isArray(row.mataKuliah)) {
-          row.mataKuliah.forEach(v => { if (v && v.trim()) courseValues.push(v.trim()); });
-        }
-        if (row.kepakaran && Array.isArray(row.kepakaran)) {
-          row.kepakaran.forEach(v => { if (v && v.trim()) expValues.push(v.trim()); });
-        }
-      });
-
-      renderRefList('edu', eduValues);
-      renderRefList('cert', certValues);
-      renderRefList('course', courseValues);
-      renderRefList('expertise', expValues);
-    }
-
-    // ============================================================
-    //  RENDER TABLE
-    // ============================================================
-    function renderTable() {
-      const container = $('tableContainer');
-      const count = $('rowCount');
-      const lastUpdate = $('lastUpdate');
-
-      count.textContent = allData.length;
-      lastUpdate.textContent = 'Diperbarui: ' + new Date().toLocaleString('id-ID');
-
-      if (allData.length === 0) {
-        container.innerHTML = `<div class="empty-msg">Belum ada data. Silakan tambahkan entri pertama.</div>`;
-        return;
-      }
-
-      let html = `
-            <table>
-              <thead>
-                <tr>
-                  <th style="width:40px;">Foto</th>
-                  <th>Nama</th>
-                  <th>Jenis</th>
-                  <th>Prodi</th>
-                  <th>Jabatan</th>
-                  <th style="width:80px;">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-          `;
-
-      allData.slice().reverse().forEach((row, idx) => {
-        const realIdx = allData.length - 1 - idx;
-        const photoHtml = row.photo ?
-          `<img src="${row.photo}" class="photo-thumb" alt="foto" />` :
-          `<span style="color:#a0b4c8;font-size:0.7rem;">–</span>`;
-        html += `
-              <tr>
-                <td>${photoHtml}</td>
-                <td><strong>${row.name || ''}</strong></td>
-                <td>${row.type || ''}</td>
-                <td>${row.prodi || ''}</td>
-                <td>${row.jabatan || ''}</td>
-                <td>
-                  <div class="actions-cell">
-                    <button onclick="viewRow(${realIdx})" title="Lihat detail">👁</button>
-                    <button class="danger" onclick="deleteRow(${realIdx})" title="Hapus">🗑</button>
-                  </div>
-                </td>
-              </tr>
-            `;
-      });
-
-      html += `</tbody></table>`;
-      container.innerHTML = html;
-    }
-
-    // ============================================================
-    //  VIEW / DELETE
-    // ============================================================
-    function viewRow(idx) {
-      const row = allData[idx];
-      if (!row) return;
-      const fmt = (arr) => Array.isArray(arr) ? arr.join(', ') : '-';
-      const msg =
-        `📋 DATA PROFIL\n───────────────\nNama    : ${row.name}\nJenis   : ${row.type}\nProdi   : ${row.prodi}\nJabatan : ${row.jabatan || '-'}\n${row.instansi ? 'Instansi: ' + row.instansi : ''}\nBio     : ${row.bio || '-'}\nPendidikan : ${fmt(row.pendidikan)}\nSertifikat : ${fmt(row.sertifikat)}\nMata Kuliah: ${fmt(row.mataKuliah)}\nKepakaran  : ${fmt(row.kepakaran)}\nFoto   : ${row.photo || 'Tidak ada'}`;
-      alert(msg);
-    }
-
-    async function deleteRow(idx) {
-      const row = allData[idx];
-      if (!row) return;
-      if (!confirm(`Hapus data "${row.name}"?`)) return;
-
+async function submitForm(e) {
+  e.preventDefault();
+  const data = getFormData();
+  if (!data) return;
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<span class="spinner"></span> Menyimpan...';
+  try {
+    let photoUrl = uploadedFileUrl;
+    if (croppedFileData && !uploadedFileUrl) {
       if (USE_MOCK) {
-        allData.splice(idx, 1);
-        renderTable();
-        buildRefListsFromData();
-        showNotif('success', 'Data dihapus (mock mode).');
-        return;
-      }
-
-      try {
-        submitBtn.disabled = true;
-        const resp = await fetch(API_URL + '?action=delete&id=' + encodeURIComponent(row.id || ''));
-        const result = await resp.json();
-        if (result.success) {
-          allData.splice(idx, 1);
-          renderTable();
-          buildRefListsFromData();
-          showNotif('success', 'Data berhasil dihapus.');
+        await new Promise(r => setTimeout(r, 600));
+        photoUrl = 'https://picsum.photos/seed/' + Date.now() + '/200/200';
+      } else {
+        const blob = await fetch(croppedFileData).then(r => r.blob());
+        const formData = new FormData();
+        formData.append('file', blob, 'foto.jpg');
+        formData.append('name', data.name);
+        const uploadResp = await fetch(API_URL + '?action=upload', { method: 'POST', body: formData });
+        const uploadResult = await uploadResp.json();
+        if (uploadResult.success) {
+          photoUrl = uploadResult.url;
+          uploadedFileUrl = photoUrl;
         } else {
-          throw new Error(result.message || 'Gagal hapus data.');
+          throw new Error(uploadResult.message || 'Gagal upload foto.');
         }
-      } catch (err) {
-        showNotif('error', 'Gagal hapus: ' + err.message);
-      } finally {
-        submitBtn.disabled = false;
       }
     }
-
-    // ============================================================
-    //  NOTIFICATIONS
-    // ============================================================
-    function showNotif(type, msg) {
-      notif.className = 'notification ' + type;
-      notifMsg.textContent = msg;
-      notif.style.display = 'flex';
-      clearTimeout(window.notifTimer);
-      window.notifTimer = setTimeout(() => {
-        if (notif.style.display !== 'none') closeNotif();
-      }, 5000);
-    }
-
-    function closeNotif() {
-      notif.style.display = 'none';
-      clearTimeout(window.notifTimer);
-    }
-
-    // ============================================================
-    //  RESET
-    // ============================================================
-    function resetForm() {
-      document.getElementById('staffForm').reset();
-      removeFile();
-      Object.keys(tags).forEach(key => { tags[key] = [];
-        renderTags(key); });
-      typeEl.dispatchEvent(new Event('change'));
-      ['eduInput', 'certInput', 'courseInput', 'expertiseInput'].forEach(id => {
-        $(id).value = '';
+    data.photo = photoUrl;
+    if (USE_MOCK) {
+      await new Promise(r => setTimeout(r, 500));
+      const mockId = Date.now();
+      allData.push({ id: mockId, ...data });
+      renderTable();
+      showNotif('success', 'Data berhasil disimpan (mock mode).');
+      resetForm();
+    } else {
+      const params = new URLSearchParams();
+      params.append('action', 'save');
+      params.append('name', data.name);
+      params.append('type', data.type);
+      params.append('prodi', data.prodi);
+      params.append('jabatan', data.jabatan);
+      params.append('instansi', data.instansi);
+      params.append('bio', data.bio);
+      params.append('pendidikan', JSON.stringify(data.pendidikan));
+      params.append('sertifikat', JSON.stringify(data.sertifikat));
+      params.append('mataKuliah', JSON.stringify(data.mataKuliah));
+      params.append('kepakaran', JSON.stringify(data.kepakaran));
+      params.append('photo', data.photo);
+      const saveResp = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString()
       });
-      closeNotif();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // ============================================================
-    //  ENTER KEY SUPPORT
-    // ============================================================
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') {
-        const target = e.target;
-        const fieldMap = {
-          'eduInput': 'edu',
-          'certInput': 'cert',
-          'courseInput': 'course',
-          'expertiseInput': 'expertise'
-        };
-        const field = fieldMap[target.id];
-        if (field) {
-          e.preventDefault();
-          addTag(field);
-        }
-      }
-    });
-
-    // ============================================================
-    //  INIT
-    // ============================================================
-    document.addEventListener('DOMContentLoaded', function() {
-      if (!USE_MOCK) {
+      const saveResult = await saveResp.json();
+      if (saveResult.success) {
+        showNotif('success', 'Data berhasil disimpan!');
+        resetForm();
         loadData();
       } else {
-        allData = [];
-        renderTable();
-        showNotif('success', 'Mode demo – database kosong. Silakan tambahkan data!');
-        setTimeout(() => {
-          allData = [{
-            id: 1,
-            name: 'Dr. Ahmad Kosasih, S.T., M.T',
-            type: 'Dosen Tetap',
-            prodi: 'Teknik Listrik Bandara',
-            jabatan: 'Lektor',
-            instansi: '',
-            bio: 'Dosen tetap dengan pengalaman 15 tahun.',
-            pendidikan: ['S2 Teknik Penerbangan - ITB', 'S1 Teknik Listrik Bandara - ITB'],
-            sertifikat: ['Sertifikat Instalasi Listrik Bandara', 'Sertifikat Sistem Tenaga Penerbangan'],
-            mataKuliah: ['Sistem Tenaga Bandara', 'Instalasi Listrik Penerbangan'],
-            kepakaran: ['Sistem tenaga bandara', 'Instalasi listrik'],
-            photo: 'https://picsum.photos/seed/1/200/200'
-          }];
-          renderTable();
-          buildRefListsFromData();
-        }, 300);
+        throw new Error(saveResult.message || 'Gagal menyimpan data.');
       }
-    });
+    }
+  } catch (err) {
+    showNotif('error', 'Terjadi kesalahan: ' + err.message);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<i class="fas fa-save"></i> Simpan Data';
+  }
+}
 
-    // ============================================================
-    //  GLOBAL EXPOSURE
-    // ============================================================
-    window.addTag = addTag;
-    window.removeTag = removeTag;
-    window.addTagFromRef = addTagFromRef;
-    window.handleFile = handleFile;
-    window.removeFile = removeFile;
-    window.submitForm = submitForm;
-    window.loadData = loadData;
-    window.viewRow = viewRow;
-    window.deleteRow = deleteRow;
-    window.resetForm = resetForm;
-    window.closeNotif = closeNotif;
-    window.showNotif = showNotif;
+async function loadData() {
+  try {
+    if (USE_MOCK) { renderTable(); buildRefListsFromData(); return; }
+    const resp = await fetch(API_URL + '?action=list');
+    const result = await resp.json();
+    if (result.success) {
+      allData = result.data || [];
+      renderTable();
+      buildRefListsFromData();
+    } else {
+      showNotif('error', 'Gagal memuat data: ' + (result.message || ''));
+    }
+  } catch (err) {
+    showNotif('error', 'Gagal memuat data: ' + err.message);
+  }
+}
 
-    console.log('✅ PPI Curug Data Collection System siap digunakan.');
-    console.log('✅ API_URL:', API_URL);
-  </script>
+function buildRefListsFromData() {
+  const eduValues = [], certValues = [], courseValues = [], expValues = [];
+  allData.forEach(row => {
+    if (row.pendidikan && Array.isArray(row.pendidikan)) row.pendidikan.forEach(v => { if (v && v.trim()) eduValues.push(v.trim()); });
+    if (row.sertifikat && Array.isArray(row.sertifikat)) row.sertifikat.forEach(v => { if (v && v.trim()) certValues.push(v.trim()); });
+    if (row.mataKuliah && Array.isArray(row.mataKuliah)) row.mataKuliah.forEach(v => { if (v && v.trim()) courseValues.push(v.trim()); });
+    if (row.kepakaran && Array.isArray(row.kepakaran)) row.kepakaran.forEach(v => { if (v && v.trim()) expValues.push(v.trim()); });
+  });
+  renderRefList('edu', eduValues);
+  renderRefList('cert', certValues);
+  renderRefList('course', courseValues);
+  renderRefList('expertise', expValues);
+}
+
+function renderTable() {
+  const container = $('tableContainer');
+  const count = $('rowCount');
+  const lastUpdate = $('lastUpdate');
+  count.textContent = allData.length;
+  lastUpdate.textContent = 'Diperbarui: ' + new Date().toLocaleString('id-ID');
+  if (allData.length === 0) {
+    container.innerHTML = `<div class="empty-msg">Belum ada data. Silakan tambahkan entri pertama.</div>`;
+    return;
+  }
+  let html = `<table><thead><tr><th style="width:40px;">Foto</th><th>Nama</th><th>Jenis</th><th>Prodi</th><th>Jabatan</th><th style="width:80px;">Aksi</th></tr></thead><tbody>`;
+  allData.slice().reverse().forEach((row, idx) => {
+    const realIdx = allData.length - 1 - idx;
+    const photoHtml = row.photo ? `<img src="${row.photo}" class="photo-thumb" alt="foto" />` : `<span style="color:#a0b4c8;font-size:0.7rem;">–</span>`;
+    html += `<tr><td>${photoHtml}</td><td><strong>${row.name || ''}</strong></td><td>${row.type || ''}</td><td>${row.prodi || ''}</td><td>${row.jabatan || ''}</td><td><div class="actions-cell"><button onclick="viewRow(${realIdx})" title="Lihat detail">👁</button><button class="danger" onclick="deleteRow(${realIdx})" title="Hapus">🗑</button></div></td></tr>`;
+  });
+  html += `</tbody></table>`;
+  container.innerHTML = html;
+}
+
+function viewRow(idx) {
+  const row = allData[idx];
+  if (!row) return;
+  const fmt = (arr) => Array.isArray(arr) ? arr.join(', ') : '-';
+  alert(`📋 DATA PROFIL\n───────────────\nNama    : ${row.name}\nJenis   : ${row.type}\nProdi   : ${row.prodi}\nJabatan : ${row.jabatan || '-'}\n${row.instansi ? 'Instansi: ' + row.instansi : ''}\nBio     : ${row.bio || '-'}\nPendidikan : ${fmt(row.pendidikan)}\nSertifikat : ${fmt(row.sertifikat)}\nMata Kuliah: ${fmt(row.mataKuliah)}\nKepakaran  : ${fmt(row.kepakaran)}\nFoto   : ${row.photo || 'Tidak ada'}`);
+}
+
+async function deleteRow(idx) {
+  const row = allData[idx];
+  if (!row) return;
+  if (!confirm(`Hapus data "${row.name}"?`)) return;
+  if (USE_MOCK) {
+    allData.splice(idx, 1);
+    renderTable();
+    buildRefListsFromData();
+    showNotif('success', 'Data dihapus (mock mode).');
+    return;
+  }
+  try {
+    submitBtn.disabled = true;
+    const resp = await fetch(API_URL + '?action=delete&id=' + encodeURIComponent(row.id || ''));
+    const result = await resp.json();
+    if (result.success) {
+      allData.splice(idx, 1);
+      renderTable();
+      buildRefListsFromData();
+      showNotif('success', 'Data berhasil dihapus.');
+    } else {
+      throw new Error(result.message || 'Gagal hapus data.');
+    }
+  } catch (err) {
+    showNotif('error', 'Gagal hapus: ' + err.message);
+  } finally {
+    submitBtn.disabled = false;
+  }
+}
+
+function showNotif(type, msg) {
+  notif.className = 'notification ' + type;
+  notifMsg.textContent = msg;
+  notif.style.display = 'flex';
+  clearTimeout(window.notifTimer);
+  window.notifTimer = setTimeout(() => { if (notif.style.display !== 'none') closeNotif(); }, 5000);
+}
+
+function closeNotif() {
+  notif.style.display = 'none';
+  clearTimeout(window.notifTimer);
+}
+
+function resetForm() {
+  document.getElementById('staffForm').reset();
+  removeFile();
+  Object.keys(tags).forEach(key => { tags[key] = []; renderTags(key); });
+  typeEl.dispatchEvent(new Event('change'));
+  ['eduInput', 'certInput', 'courseInput', 'expertiseInput'].forEach(id => { $(id).value = ''; });
+  closeNotif();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    const target = e.target;
+    const fieldMap = { 'eduInput': 'edu', 'certInput': 'cert', 'courseInput': 'course', 'expertiseInput': 'expertise' };
+    const field = fieldMap[target.id];
+    if (field) { e.preventDefault(); addTag(field); }
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (!USE_MOCK) loadData();
+  else {
+    allData = [];
+    renderTable();
+    showNotif('success', 'Mode demo – database kosong. Silakan tambahkan data!');
+    setTimeout(() => {
+      allData = [{ id: 1, name: 'Dr. Ahmad Kosasih, S.T., M.T', type: 'Dosen Tetap', prodi: 'Teknik Listrik Bandara', jabatan: 'Lektor', instansi: '', bio: 'Dosen tetap dengan pengalaman 15 tahun.', pendidikan: ['S2 Teknik Penerbangan - ITB', 'S1 Teknik Listrik Bandara - ITB'], sertifikat: ['Sertifikat Instalasi Listrik Bandara', 'Sertifikat Sistem Tenaga Penerbangan'], mataKuliah: ['Sistem Tenaga Bandara', 'Instalasi Listrik Penerbangan'], kepakaran: ['Sistem tenaga bandara', 'Instalasi listrik'], photo: 'https://picsum.photos/seed/1/200/200' }];
+      renderTable();
+      buildRefListsFromData();
+    }, 300);
+  }
+});
+
+window.addTag = addTag;
+window.removeTag = removeTag;
+window.addTagFromRef = addTagFromRef;
+window.handleFile = handleFile;
+window.removeFile = removeFile;
+window.submitForm = submitForm;
+window.loadData = loadData;
+window.viewRow = viewRow;
+window.deleteRow = deleteRow;
+window.resetForm = resetForm;
+window.closeNotif = closeNotif;
+window.showNotif = showNotif;
+console.log('✅ PPI Curug Data Collection System siap digunakan.');
+console.log('✅ API_URL:', API_URL);
+</script>
 </body>
 </html>
