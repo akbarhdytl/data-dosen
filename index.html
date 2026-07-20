@@ -931,7 +931,7 @@
     //  CONFIGURATION
     // ============================================================
 
-    // After deploying your Google Apps Script, replace this URL.
+    // ✅ YOUR DEPLOYMENT URL - REPLACED
     const API_URL = 'https://script.google.com/macros/s/AKfycbwlXJYX7NTl4dZfyqQCWPxOP-esIV9dyExQYyrJuOX58Em2JZkPq2BB5n2HAkRpnBSe/exec';
     const USE_MOCK = false;
 
@@ -941,10 +941,9 @@
 
     let allData = [];
     let selectedFile = null;
-    let croppedFileData = null; // base64 data of cropped image
+    let croppedFileData = null;
     let uploadedFileUrl = '';
 
-    // Tag storage per field
     const tags = {
       edu: [],
       cert: [],
@@ -1144,7 +1143,6 @@
       reader.onload = function(ev) {
         const img = new Image();
         img.onload = function() {
-          // Crop to square using canvas
           const canvas = document.createElement('canvas');
           const size = Math.min(img.width, img.height);
           const sx = (img.width - size) / 2;
@@ -1154,12 +1152,10 @@
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, sx, sy, size, size, 0, 0, size, size);
 
-          // Get base64 data
           const base64 = canvas.toDataURL(file.type || 'image/jpeg', 0.92);
           croppedFileData = base64;
           selectedFile = file;
 
-          // Show preview
           previewImg.src = base64;
           fileNameEl.textContent = file.name;
           fileSizeEl.textContent = (file.size / 1024 / 1024).toFixed(1) + ' MB (crop ke persegi)';
@@ -1227,7 +1223,7 @@
         mataKuliah: tags.course,
         kepakaran: tags.expertise,
         photo: uploadedFileUrl || '',
-        photoBase64: croppedFileData || '' // send base64 for upload
+        photoBase64: croppedFileData || ''
       };
     }
 
@@ -1247,7 +1243,6 @@
       try {
         let photoUrl = uploadedFileUrl;
 
-        // Upload photo via base64 if new file
         if (croppedFileData && !uploadedFileUrl) {
           if (USE_MOCK) {
             await new Promise(r => setTimeout(r, 600));
@@ -1273,7 +1268,7 @@
         }
 
         data.photo = photoUrl;
-        delete data.photoBase64; // remove before saving to sheet
+        delete data.photoBase64;
 
         if (USE_MOCK) {
           await new Promise(r => setTimeout(r, 500));
@@ -1572,7 +1567,7 @@
     window.showNotif = showNotif;
 
     console.log('✅ PPI Curug Data Collection System siap digunakan.');
-    console.log('📌 Ganti API_URL dengan URL deployment Anda.');
+    console.log('✅ API_URL:', API_URL);
   </script>
 </body>
 </html>
